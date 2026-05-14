@@ -48,8 +48,8 @@ It is built as a **DevOps-integrated project** demonstrating the full workflow f
 
 ---
 
-## 📁 Project Structure
-SecureVault Pro – File Security & DevOps Project/
+## 🧱 Architecture Diagram 
+```text
                     ┌────────────────────┐
                     │     User Browser   │
                     └─────────┬──────────┘
