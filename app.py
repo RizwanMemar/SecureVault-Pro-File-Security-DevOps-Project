@@ -205,9 +205,9 @@ def image_to_text():
         extracted_text = pytesseract.image_to_string(image)
 
         return render_template(
-            "ocr_result.html",
-            text=extracted_text,
-            filename=file.filename
+        "ocr_result.html",
+         extracted_text=extracted_text,
+        filename=file.filename
         )
 
     except Exception as e:
@@ -230,7 +230,11 @@ def api_hash():
     return jsonify(generate_hashes(path))
 
 # =========================================================
-# RUN
+# RUN APPLICATION
 # =========================================================
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
