@@ -5,6 +5,7 @@ import mimetypes
 from reportlab.pdfgen import canvas
 from PIL import Image
 import pytesseract
+from reportlab.lib.pagesizes import letter
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 app = Flask(__name__)
 
@@ -133,6 +134,7 @@ def tools():
 # =========================================================
 # TXT → PDF
 # =========================================================
+
 @app.route("/txt-to-pdf", methods=["POST"])
 def txt_to_pdf():
 
@@ -141,25 +143,33 @@ def txt_to_pdf():
     path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(path)
 
-    pdf_path = os.path.join(
-        OUTPUT_FOLDER,
-        file.filename + ".pdf"
-    )
+    pdf_path = os.path.join(OUTPUT_FOLDER, file.filename + ".pdf")
 
-    c = canvas.Canvas(pdf_path)
+    c = canvas.Canvas(pdf_path, pagesize=letter)
 
-    with open(path, "r", errors="ignore") as f:
+    width, height = letter
+    y = height - 50
 
-        y = 800
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        for line in f:
+            line = line.strip()
 
-        for line in f.readlines():
+            # wrap long text
+            while len(line) > 90:
+                c.drawString(50, y, line[:90])
+                line = line[90:]
+                y -= 15
 
-            c.drawString(50, y, line.strip()[:120])
+                if y < 50:
+                    c.showPage()
+                    y = height - 50
+
+            c.drawString(50, y, line)
             y -= 15
 
             if y < 50:
                 c.showPage()
-                y = 800
+                y = height - 50
 
     c.save()
 
@@ -202,12 +212,20 @@ def image_to_text():
 
     try:
         image = Image.open(path)
-        extracted_text = pytesseract.image_to_string(image)
+
+        # ✅ Improve OCR accuracy
+        image = image.convert("L")  # grayscale
+        image = image.resize((image.width * 2, image.height * 2))
+
+        extracted_text = pytesseract.image_to_string(
+            image,
+            config="--psm 6"
+        )
 
         return render_template(
-        "ocr_result.html",
-         extracted_text=extracted_text,
-        filename=file.filename
+            "ocr_result.html",
+            text=extracted_text,
+            filename=file.filename
         )
 
     except Exception as e:
