@@ -27,11 +27,11 @@ jobs:
         python-version: "3.11"
 
     # =========================
-    # 3. Upgrade pip
+    # 3. Upgrade pip + tools
     # =========================
     - name: Upgrade pip
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip setuptools wheel
 
     # =========================
     # 4. Install System Dependencies (OCR support)
@@ -44,27 +44,34 @@ jobs:
     # =========================
     # 5. Install Python Dependencies
     # =========================
-    
     - name: Install Requirements
       run: |
-        pip install -r requirements.txt
+        pip install --no-cache-dir -r requirements.txt
 
     # =========================
-    # 6. Code Quality Check
+    # 6. Verify Flask Installation
+    # =========================
+    - name: Verify Dependencies
+      run: |
+        pip show flask
+        python -c "import flask; print('Flask installed successfully')"
+
+    # =========================
+    # 7. Code Quality Check
     # =========================
     - name: Python Syntax Check
       run: |
         python -m py_compile app.py
 
     # =========================
-    # 7. App Smoke Test
+    # 8. App Smoke Test
     # =========================
     - name: Application Import Test
       run: |
-        python -c "from app import app; print('✅ Flask App Loaded Successfully')"
+        python -c "import flask; import app; print('✅ Flask App Loaded Successfully')"
 
     # =========================
-    # 8. Security Check (Basic)
+    # 9. Security Scan
     # =========================
     - name: Basic Security Scan
       run: |
@@ -72,14 +79,14 @@ jobs:
         bandit -r . || true
 
     # =========================
-    # 9. Docker Build
+    # 10. Docker Build
     # =========================
     - name: Build Docker Image
       run: |
         docker build -t securevault-pro .
 
     # =========================
-    # 10. Docker Run Test
+    # 11. Docker Test Run
     # =========================
     - name: Run Docker Container Test
       run: |
