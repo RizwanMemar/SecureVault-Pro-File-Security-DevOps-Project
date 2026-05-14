@@ -29,7 +29,7 @@ jobs:
     # =========================
     # 3. Upgrade pip + tools
     # =========================
-    - name: Upgrade pip
+    - name: Upgrade pip and tools
       run: |
         python -m pip install --upgrade pip setuptools wheel
 
@@ -42,51 +42,58 @@ jobs:
         sudo apt-get install -y tesseract-ocr
 
     # =========================
-    # 5. Install Python Dependencies
+    # 5. Install Python Dependencies (SAFE MODE)
     # =========================
     - name: Install Requirements
       run: |
-        pip install --no-cache-dir -r requirements.txt
+        python -m pip install --no-cache-dir -r requirements.txt
 
     # =========================
-    # 6. Verify Flask Installation
+    # 6. Verify Environment (IMPORTANT DEBUG STEP)
     # =========================
-    - name: Verify Dependencies
+    - name: Verify Python Environment
       run: |
-        pip show flask
+        python -c "import sys; print('Python path:', sys.executable)"
+        python -m pip list
+
+    # =========================
+    # 7. Verify Flask Installation
+    # =========================
+    - name: Verify Flask Installation
+      run: |
         python -c "import flask; print('Flask installed successfully')"
 
     # =========================
-    # 7. Code Quality Check
+    # 8. Code Quality Check
     # =========================
     - name: Python Syntax Check
       run: |
         python -m py_compile app.py
 
     # =========================
-    # 8. App Smoke Test
+    # 9. App Smoke Test
     # =========================
     - name: Application Import Test
       run: |
         python -c "import flask; import app; print('✅ Flask App Loaded Successfully')"
 
     # =========================
-    # 9. Security Scan
+    # 10. Security Scan
     # =========================
     - name: Basic Security Scan
       run: |
-        pip install bandit
+        python -m pip install bandit
         bandit -r . || true
 
     # =========================
-    # 10. Docker Build
+    # 11. Docker Build
     # =========================
     - name: Build Docker Image
       run: |
         docker build -t securevault-pro .
 
     # =========================
-    # 11. Docker Test Run
+    # 12. Docker Test Run
     # =========================
     - name: Run Docker Container Test
       run: |
