@@ -1,24 +1,78 @@
-# Secure File Hash Generator
+# 🔐 SecureVault Pro – File Security & DevOps Project
 
-A Flask web application that generates MD5, SHA1, and SHA256 hashes for uploaded files.
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Flask](https://img.shields.io/badge/Flask-Web%20App-green)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![CI](https://img.shields.io/badge/GitHub%20Actions-CI%20Passing-success)
+![License](https://img.shields.io/badge/License-Educational-lightgrey)
 
-## Technologies Used
-- Flask
-- Git
+---
+
+## 🚀 Project Overview
+
+SecureVault Pro is a **Flask-based cybersecurity web application** that analyzes uploaded files for:
+
+- MD5, SHA1, SHA256 hashing
+- File type detection
+- Risk scoring engine
+- Basic malware detection (hash-based)
+- Image to PDF conversion
+- OCR (Image to Text simulation / optional real OCR support)
+
+It is built as a **DevOps-integrated project** demonstrating the full workflow from development to deployment.
+
+---
+
+## 🧰 Features
+
+- 🔐 File hash generation (MD5, SHA1, SHA256)
+- ⚠️ Risk analysis engine
+- 🛡 Malware detection (signature-based)
+- 🖼 Image → PDF converter
+- 🔍 Image → Text (OCR)
+- 🧰 Tools dashboard (multi-page UI)
+- 💻 Hacker-style terminal animation UI
+- 🌐 Flask web interface
+
+---
+
+## ⚙️ Technologies Used
+
+- Python (Flask)
+- HTML / CSS / JavaScript
 - Docker
-- GitHub Actions
-- Terraform
+- Git & GitHub
+- GitHub Actions (CI Pipeline)
+- Terraform (Infrastructure simulation)
+- ReportLab (PDF generation)
 
-## Run Application
+---
 
+## 📁 Project Structure
+SecureVault Pro – File Security & DevOps Project/
+│
+├── app.py
+├── requirements.txt
+├── Dockerfile
+├── README.md
+│
+├── templates/
+│ ├── index.html
+│ ├── tools.html
+│ ├── ocr_result.html
+│
+├── static/
+│ └── style.css
+│
+├── uploads/
+├── .github/workflows/ci.yml
+└── terraform/main.tf
+
+
+---
+
+## ▶️ Run Locally
+
+```bash
+pip install -r requirements.txt
 python app.py
-
-## Docker
-
-docker build -t hash-generator .
-docker run -p 5000:5000 hash-generator
-
-## Terraform
-
-terraform init
-terraform apply
