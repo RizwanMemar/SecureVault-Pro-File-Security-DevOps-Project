@@ -2,18 +2,17 @@ name: SecureVault Pro CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-test:
-    name: Build & Test Pipeline
     runs-on: ubuntu-latest
 
     steps:
     # =========================
-    # 1. Checkout Code
+    # 1. Checkout code
     # =========================
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -27,74 +26,66 @@ jobs:
         python-version: "3.11"
 
     # =========================
-    # 3. Upgrade pip + tools
+    # 3. Upgrade pip (IMPORTANT FIX)
     # =========================
-    - name: Upgrade pip and tools
+    - name: Upgrade pip tools
       run: |
         python -m pip install --upgrade pip setuptools wheel
 
     # =========================
-    # 4. Install System Dependencies (OCR support)
+    # 4. Debug: show files (IMPORTANT)
     # =========================
-    - name: Install System Dependencies
+    - name: Check repository files
       run: |
-        sudo apt-get update
-        sudo apt-get install -y tesseract-ocr
+        ls -R
 
     # =========================
-    # 5. Install Python Dependencies (SAFE MODE)
+    # 5. Install dependencies (FORCED CLEAN INSTALL)
     # =========================
     - name: Install Requirements
       run: |
         python -m pip install --no-cache-dir -r requirements.txt
 
     # =========================
-    # 6. Verify Environment (IMPORTANT DEBUG STEP)
-    # =========================
-    - name: Verify Python Environment
-      run: |
-        python -c "import sys; print('Python path:', sys.executable)"
-        python -m pip list
-
-    # =========================
-    # 7. Verify Flask Installation
+    # 6. VERIFY Flask install (IMPORTANT DEBUG STEP)
     # =========================
     - name: Verify Flask Installation
       run: |
-        python -c "import flask; print('Flask installed successfully')"
+        python -c "import flask; print('Flask OK')"
+        pip show flask
 
     # =========================
-    # 8. Code Quality Check
+    # 7. Syntax check
     # =========================
     - name: Python Syntax Check
       run: |
         python -m py_compile app.py
 
     # =========================
-    # 9. App Smoke Test
+    # 8. Import test
     # =========================
-    - name: Application Import Test
+    - name: Import Test
       run: |
-        python -c "import flask; import app; print('✅ Flask App Loaded Successfully')"
+        python -c "import flask; from app import app; print('APP LOADED')"
 
     # =========================
-    # 10. Security Scan
+    # 9. Install Bandit + scan
     # =========================
-    - name: Basic Security Scan
+    - name: Security Scan
       run: |
-        python -m pip install bandit
+        pip install bandit
         bandit -r . || true
 
     # =========================
-    # 11. Docker Build
+    # 10. Docker build
     # =========================
     - name: Build Docker Image
       run: |
         docker build -t securevault-pro .
 
     # =========================
-    # 12. Docker Test Run
+    # 11. Docker test
     # =========================
-    - name: Run Docker Container Test
+    - name: Run Docker Test
       run: |
-        docker run --rm securevault-pro python -c "print('🚀 Docker Container Working')"
+        docker run --rm securevault-pro python -c "print('Docker OK')"
