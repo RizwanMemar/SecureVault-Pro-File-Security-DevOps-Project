@@ -94,7 +94,6 @@ It is built as a **DevOps-integrated project** demonstrating the full workflow f
                     └────────────────────────┘
 
 ---
-
 ## ▶️ Run Locally
 
 ```bash
