@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OCR Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<div class="navbar">
+
+    <a href="javascript:history.back()">
+        <button>🔙 Back</button>
+    </a>
+
+    <a href="javascript:location.reload()">
+        <button>🔄 Refresh</button>
+    </a>
+
+    <a href="/tools">
+        <button>🧰 Tools</button>
+    </a>
+
+    <a href="/">
+        <button>🏠 Dashboard</button>
+    </a>
+
+</div>
+<body>
+
+<div class="navbar">
+    <a href="/">
+        <button>🏠 Scanner</button>
+    </a>
+
+    <a href="/tools">
+        <button>🧰 Tools Hub</button>
+    </a>
+</div>
+
+<div class="container">
+
+    <h1 class="section-title">🔍 OCR Extraction Result</h1>
+
+    <div class="card full">
+        <textarea style="height:300px; width:100%;">
+{{ text }}
+        </textarea>
+    </div>
+
+</div>
+
+</body>
+</html>

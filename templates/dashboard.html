@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureVault Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .dashboard {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 60%;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 20px;
+            background: #111827;
+            border: 1px solid #22c55e;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #22c55e;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        .title {
+            color: #22c55e;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1 class="title">🔐 SecureVault Pro</h1>
+    <p class="subtitle">Cyber Security Multi-Tool Dashboard</p>
+
+    <!-- LOADING BAR -->
+    <div id="loadBar" style="width:0;height:5px;background:#22c55e;transition:2s;"></div>
+
+    <div class="btn-grid">
+
+        <a class="btn" href="/scanner">🛡 File Scanner</a>
+
+        <a class="btn" href="/tools">🧰 Tools Hub</a>
+
+    </div>
+
+</div>
+
+<script>
+    // hacker loading effect
+    let bar = document.getElementById("loadBar");
+    setTimeout(() => {
+        bar.style.width = "100%";
+    }, 300);
+</script>
+
+</body>
+</html>

@@ -1,28 +1,30 @@
-name: File Hash Generator CI
+name: SecureVault CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Python
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.11
+        python-version: "3.11"
 
-    - name: Install Dependencies
-      run: pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
 
-    - name: Test Application
-      run: python -m py_compile app.py
+    - name: Run basic test (import check)
+      run: |
+        python -c "import app"
 
-    - name: Build Docker Image
-      run: docker build -t hash-generator .
+    - name: Build Docker image
+      run: |
+        docker build -t securevault .

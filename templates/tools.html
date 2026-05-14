@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureVault Tools Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR (FIXED ONCE ONLY) -->
+<div class="navbar">
+
+    <a href="javascript:history.back()">
+        <button>🔙 Back</button>
+    </a>
+
+    <a href="javascript:location.reload()">
+        <button>🔄 Refresh</button>
+    </a>
+
+    <a href="/tools">
+        <button>🧰 Tools</button>
+    </a>
+
+    <a href="/">
+        <button>🏠 Dashboard</button>
+    </a>
+
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>🧰 SecureVault Tools Dashboard</h1>
+    <p>Cybersecurity & File Utility Toolkit</p>
+</div>
+
+<div class="container">
+
+<div class="grid">
+
+    <!-- TXT TO PDF -->
+    <div class="card">
+        <h2>📄 TXT → PDF</h2>
+        <form method="POST" action="/txt-to-pdf" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Convert File</button>
+        </form>
+    </div>
+
+    <!-- IMAGE TO PDF -->
+    <div class="card">
+        <h2>🖼 IMAGE → PDF</h2>
+        <form method="POST" action="/image-to-pdf" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Generate PDF</button>
+        </form>
+    </div>
+
+    <!-- OCR -->
+    <div class="card">
+        <h2>🔍 IMAGE → TEXT OCR</h2>
+        <form method="POST" action="/image-to-text" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Extract Text</button>
+        </form>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
