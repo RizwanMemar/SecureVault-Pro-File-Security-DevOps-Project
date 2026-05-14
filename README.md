@@ -46,180 +46,222 @@ It is built as a DevOps-integrated project demonstrating the full workflow from 
 - Terraform (Infrastructure simulation)
 - ReportLab (PDF generation)
 
----
-
 ## 🧱 Architecture Diagram
 
+```text
                     ┌────────────────────┐
-                    │     User Browser   │
+                    │    User Browser    │
                     └─────────┬──────────┘
                               │
                               ▼
                 ┌──────────────────────────┐
-                │   Flask Web Application  │
-                │   (SecureVault Pro)      │
+                │  Flask Web Application   │
+                │    (SecureVault Pro)     │
                 └─────────┬────────────────┘
                           │
         ┌─────────────────┼──────────────────┐
         ▼                 ▼                  ▼
+
 ┌──────────────┐  ┌────────────────┐  ┌──────────────────┐
-│ File Upload  │  │ Security Engine │  │ Tools Module     │
+│ File Upload  │  │ Security Engine│  │   Tools Module   │
 │              │  │                │  │                  │
-│ - Upload     │  │ - MD5 / SHA    │  │ - Image→PDF      │
-│ - Store file │  │ - Risk Score   │  │ - OCR (Text)     │
-└──────────────┘  │ - Malware Check │  │ - TXT→PDF        │
-                  └───────┬────────┘  └─────────┬────────┘
-                          │                      │
-                          ▼                      ▼
+│ - Upload     │  │ - MD5 / SHA    │  │ - Image → PDF    │
+│ - Store File │  │ - Risk Score   │  │ - OCR (Text)     │
+│              │  │ - Malware Check│  │ - TXT → PDF      │
+└──────────────┘  └───────┬────────┘  └─────────┬────────┘
+                           │                     │
+                           ▼                     ▼
+
                 ┌────────────────────────────────────┐
-                │        Processing Layer            │
-                │  - Hash Generator (SHA/MD5/SHA256)│
-                │  - Risk Analysis Engine           │
+                │         Processing Layer           │
+                │                                    │
+                │ - Hash Generator                   │
+                │ - SHA256 / SHA1 / MD5             │
+                │ - Risk Analysis Engine            │
+                │ - File Intelligence Scanner       │
                 └──────────────────┬────────────────┘
+                                   │
                                    ▼
+
                     ┌────────────────────────┐
-                    │   Docker Container     │
-                    │ (Portable Deployment)  │
+                    │    Docker Container    │
+                    │  (Portable Deployment) │
                     └─────────┬──────────────┘
+                              │
                               ▼
+
                     ┌────────────────────────┐
                     │ GitHub Actions (CI/CD) │
+                    │                        │
                     │ - Build & Test         │
-                    │ - Docker validation    │
+                    │ - Docker Validation    │
+                    │ - Automated Workflow   │
                     └─────────┬──────────────┘
+                              │
                               ▼
+
                     ┌────────────────────────┐
                     │ Terraform (IaC Layer)  │
-                    │ - Infrastructure setup │
+                    │                        │
+                    │ - Infrastructure Setup │
+                    │ - Local Simulation     │
                     └────────────────────────┘
+```
 
 ---
 
-## ⚙️ Full Setup & Dependencies
+## ▶️ Full Local Setup Guide
 
-1. Clone Repository
--------------------
+### 1️⃣ Clone Repository
 
-git clone https://github.com/your-username/securevault-pro.git
-cd securevault-pro
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+```
 
+```bash
+cd "SecureVault Pro – File Security & DevOps Project"
+```
 
-2. Create Virtual Environment
------------------------------
+---
 
+### 2️⃣ Create Virtual Environment
+
+```bash
 python -m venv venv
+```
 
+---
 
-3. Activate Virtual Environment
--------------------------------
+### 3️⃣ Activate Virtual Environment
 
-Windows:
+### Windows (PowerShell)
+
+```bash
+venv\Scripts\Activate.ps1
+```
+
+### Windows (CMD)
+
+```bash
 venv\Scripts\activate
+```
 
-Mac/Linux:
+### Linux / macOS
+
+```bash
 source venv/bin/activate
+```
 
+---
 
-4. Install Dependencies
------------------------
+### 4️⃣ Install Project Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
+---
 
-5. Install OCR Engine (IMPORTANT)
----------------------------------
+### 5️⃣ Install OCR Engine (Tesseract)
 
-This project uses Tesseract OCR for Image → Text functionality.
+### Windows
 
-Download Tesseract OCR:
-https://github.com/UB-Mannheim/tesseract/wiki
+1. Download Tesseract OCR
+2. Install it
+3. Add Tesseract to PATH
 
-Add this path to Windows Environment Variables:
+Default path:
 
-C:\Program Files\Tesseract-OCR
+```text
+C:\Program Files\Tesseract-OCR\tesseract.exe
+```
 
+Optional inside `app.py`:
 
-6. Run Flask Application
-------------------------
+```python
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+```
 
+---
+
+### 6️⃣ Run Flask Application
+
+```bash
 python app.py
+```
 
+Application URL:
 
-Open in browser:
+```text
 http://127.0.0.1:5000
-
+```
 
 ---
 
 ## 🐳 Docker Setup
 
-Build Docker image:
+### Build Docker Image
 
-docker build -t securevault .
+```bash
+docker build -t securevault-pro .
+```
 
+### Run Docker Container
 
-Run Docker container:
-
-docker run -p 5000:5000 securevault
-
+```bash
+docker run -p 5000:5000 securevault-pro
+```
 
 ---
 
-## ☁️ Terraform Setup
+## ⚙️ Terraform Setup
 
+### Open Terraform Folder
+
+```bash
 cd terraform
+```
 
+### Initialize Terraform
+
+```bash
 terraform init
+```
 
+### Apply Infrastructure
+
+```bash
 terraform apply
+```
 
+Type:
+
+```text
+yes
+```
+
+when prompted.
 
 ---
 
-## 🔄 CI/CD Pipeline
+## 🔄 GitHub Actions CI/CD
 
-GitHub Actions automatically performs:
+The project includes a CI workflow that automatically:
 
-- Code checkout
-- Python setup
-- Dependency installation
-- Application syntax testing
-- Docker image build validation
+- Checks out code
+- Installs dependencies
+- Tests Flask application
+- Builds Docker image
 
 Workflow file:
+
+```text
 .github/workflows/ci.yml
-
-
----
-
-## 📁 Project Structure
-
-app.py
-templates/
-static/
-uploads/
-Dockerfile
-requirements.txt
-README.md
-terraform/
-.github/workflows/
-
-
----
-
-## 🎯 DevOps Concepts Demonstrated
-
-- Application Development
-- Version Control with Git
-- Containerization using Docker
-- Continuous Integration (CI/CD)
-- Infrastructure as Code (Terraform)
-- Local deployment workflow
-
+```
 
 ---
 
 ## 👨‍💻 Author
 
-Qaisar Rizwan Memar  
-Student at the American University of Afghanistan
+**Qaisar Rizwan Memar**  
+Student at the American University of Afghanistan (AUAF)
